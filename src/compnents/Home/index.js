@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AddCircleOutlineRounded, Edit } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -61,6 +61,17 @@ function Index() {
   const [updateTask, setUpdateTask] = useState("");
   const [input, setInput] = useState("");
 
+  useEffect(() => {
+    try {
+      let localData = localStorage.getItem("myArray") || [];
+      localData = JSON.parse(localData);
+      console.log("localData: ", localData);
+      setTodo(localData);
+    } catch (ex) {
+      console.log(ex);
+    }
+  }, []);
+
   const classes = useStyles();
 
   const addActivity = () => {
@@ -70,9 +81,9 @@ function Index() {
     console.log(Todo);
   };
 
-  const deleteItem = (task) => {
-    var ary = Todo.filter((a, index) => {
-      if (task !== a) {
+  const deleteItem = (i) => {
+    var ary = Todo?.filter((a, index) => {
+      if (i !== index) {
         return true;
       } else {
         return false;
@@ -93,7 +104,7 @@ function Index() {
   const editTodo = () => {
     var arr = [];
     Todo.forEach((a, index) => {
-      if (updateTask == a) {
+      if (updateTask == index) {
         arr.push(taskUpdate);
       } else {
         arr.push(a);
@@ -147,6 +158,9 @@ function Index() {
         >
           Save tasks
         </Button>
+        <Typography paragraph align="center">
+          This will save ToDo list on browsers local storage
+        </Typography>
 
         <TextField
           variant="outlined"
@@ -179,23 +193,23 @@ function Index() {
           Add Todo
         </Button>
 
-        {Todo.length > 0 && (
+        {Todo?.length > 0 && (
           <Card className={classes.card}>
             <FormGroup>
-              {Todo.map((task, index) => (
+              {Todo?.map((task, index) => (
                 <div key={index} className={classes.todo}>
                   {index > 0 ? <Divider className={classes.divider} /> : ""}
                   <ListItemText primary={task} />
                   <ListItemSecondaryAction>
                     <IconButton
                       aria-label="update"
-                      onClick={() => openUpdateDialog(task)}
+                      onClick={() => openUpdateDialog(index)}
                     >
                       <Edit />
                     </IconButton>
                     <IconButton
                       aria-label="delete"
-                      onClick={() => deleteItem(task)}
+                      onClick={() => deleteItem(index)}
                     >
                       <DeleteIcon />
                     </IconButton>
