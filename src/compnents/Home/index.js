@@ -141,12 +141,6 @@ function Index() {
             http://rushikesh619.github.io/
           </Link>
         </Typography>
-        <Typography variant="h5" align="center" gutterBottom>
-          GitHub Repositiry :-
-          <Link href="https://github.com/rushikesh619/react-demo-app-rushikesh">
-            https://github.com/rushikesh619/react-demo-app-rushikesh
-          </Link>
-        </Typography>
       </Container>
       <Container maxWidth="sm">
         <Button
